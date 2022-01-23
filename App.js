@@ -10,9 +10,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator initialRouteName="Home" screenOptions={{
-        //drawerActiveBackgroundColor: "#000",
+        drawerActiveBackgroundColor: "#121212",
+        drawerActiveTintColor: "#fff",
+        drawerInactiveTintColor: "#ccc",
         drawerStyle: {
-          //backgroundColor: '#000',
+          backgroundColor: '#000',
         },
       }}>
         <Drawer.Screen name="Home" component={HomeScreen} options={{
