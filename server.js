@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
 const accountSid = "AC2dd8ce809f336455b79a03b30ad4d9f4";
-const authToken = "16251a31e57e6c97c803fd476357d94a";
+const authToken = "eaa9cc2440b402ac30d5dc14a3bc2815";
 
 // require the Twilio module and create a REST client
 const client = require('twilio')(accountSid, authToken);
@@ -30,6 +30,7 @@ function verify_number(recipient){
 
 app.post('/get_verification', function(req,res){
     const number = req.body.number;
+    console.log(number);
     verify_number(number);
     res.send("Number received");
 })

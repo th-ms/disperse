@@ -7,7 +7,6 @@ import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
 import MetadataScreen from './screens/MetadataScreen';
-import MessengerScreen from './screens/MessengerScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
 import PasswordManagerScreen from './screens/PasswordManagerScreen';
 
