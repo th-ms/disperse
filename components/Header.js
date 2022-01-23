@@ -54,7 +54,8 @@ export default function Header(props) {
               color: props.color,
               textAlign: props.align,
               paddingBottom: props.paddingBottom,
-              paddingTop: props.paddingTop
+              paddingTop: props.paddingTop,
+              padding: props.padding
             }}>{ props.text }</Text>
         );
       }
