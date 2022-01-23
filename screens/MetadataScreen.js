@@ -1,7 +1,6 @@
 import {
     StyleSheet,
     View,
-    Button,
     Dimensions,
     TouchableOpacity,
     Text,

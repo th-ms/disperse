@@ -1,24 +1,36 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
-import Header from '../components/Header';
+import {
+    StyleSheet,
+    Text,
+    ScrollView,
+    View,
+    Dimensions,
+    TouchableOpacity,
+} from "react-native";
+import Header from "../components/Header";
+import { createStackNavigator } from '@react-navigation/stack';
+import MessengerHomeScreen from "./MessengerHomeScreen";
+import MessageScreen from "./MessageScreen";
 
-const widthX = Dimensions.get("window").width;
+const Stack = createStackNavigator();
 
 export default function MessengerScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-        <Header fontSize={widthX * 0.05} fontFamily="Montserrat_400Regular" color="#fff" text="Anytime you take a picture on your phone, metadata is created.
-Metadata can be information such as the time and location that the file was created. Using our high tech metadata remover, you can maintain your privacy and have piece of mind by removing this sensitive data." padding={25} align='center' />
-        <Text>Decentralize your data.</Text>
-    </View>
-  );
+    <Stack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: '#252525',
+        shadowColor: 'transparent',
+        shadowRadius: 0,
+        shadowOffset: {
+            height: 0,
+        },
+      },
+      headerTitleStyle: {
+        color: 'white'
+      },
+    }}>
+      <Stack.Screen name="Messages" component={MessengerHomeScreen} />
+      <Stack.Screen name="Direct Message" component={MessageScreen} />
+    </Stack.Navigator>
+  )
+    
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#000',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }
-  });
-  

@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import MetadataScreen from './screens/MetadataScreen';
 import MessengerScreen from './screens/MessengerScreen';
+import PasswordManagerScreen from './screens/PasswordManagerScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +33,20 @@ export default function App() {
           headerTintColor: '#ffffff',
         }}/>
         <Drawer.Screen name="Metadata Remover" component={MetadataScreen} options={{
+          headerStyle: {
+            backgroundColor: '#252525',
+            shadowColor: 'transparent',
+            shadowRadius: 0,
+            shadowOffset: {
+                height: 0,
+            },
+          },
+          headerTitleStyle: {
+            color: 'white'
+          },
+          headerTintColor: '#ffffff',
+        }}/>
+        <Drawer.Screen name="Password Manager" component={PasswordManagerScreen} options={{
           headerStyle: {
             backgroundColor: '#252525',
             shadowColor: 'transparent',
