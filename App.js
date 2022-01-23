@@ -9,6 +9,7 @@ import HomeScreen from './screens/HomeScreen';
 import MetadataScreen from './screens/MetadataScreen';
 import MessengerScreen from './screens/MessengerScreen';
 import ConfirmScreen from './screens/ConfirmScreen';
+import PasswordManagerScreen from './screens/PasswordManagerScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -93,7 +94,7 @@ function App() {
           },
           headerTintColor: '#ffffff',
         }}/>
-        <Drawer.Screen name="Messenger" component={MessengerScreen} options={{
+        <Drawer.Screen name="Password Manager" component={PasswordManagerScreen} options={{
           headerStyle: {
             backgroundColor: '#252525',
             shadowColor: 'transparent',
