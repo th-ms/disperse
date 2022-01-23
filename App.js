@@ -1,14 +1,62 @@
+import React, { useState } from "react";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import WelcomeScreen from './screens/WelcomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
 import MetadataScreen from './screens/MetadataScreen';
 import MessengerScreen from './screens/MessengerScreen';
+import ConfirmScreen from './screens/ConfirmScreen';
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
-export default function App() {
+export default function Home() {
+
   return (
     <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen
+            name="Root"
+            component={App}
+            options={{headerShown: false }}
+          />
+          <Stack.Screen
+            options={{ gestureEnabled: false }}
+            name="Welcome"
+            component={WelcomeScreen}
+          />
+          <Stack.Screen
+            options={{ gestureEnabled: false }}
+            name="Signup"
+            component={SignupScreen}
+          />
+          <Stack.Screen
+            options={{ gestureEnabled: false }}
+            name="Login"
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            options={{ gestureEnabled: false }}
+            name="Confirm"
+            component={ConfirmScreen}
+          />
+        </Stack.Navigator>
+
+    </NavigationContainer>
+  );
+
+}
+
+function App() {
+  return (
       <Drawer.Navigator initialRouteName="Home" screenOptions={{
         drawerActiveBackgroundColor: "#121212",
         drawerActiveTintColor: "#fff",
@@ -60,6 +108,5 @@ export default function App() {
           headerTintColor: '#ffffff',
         }}/>
       </Drawer.Navigator>
-    </NavigationContainer>
   );
 }
