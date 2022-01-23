@@ -7,9 +7,9 @@ import {
     Text,
     PermissionsAndroid,
     Platform,
-    SafeAreaView,
     ScrollView,
     Image,
+    ActivityIndicator
 } from "react-native";
 import { useState } from 'react';
 import * as ImagePicker from "expo-image-picker";
@@ -17,6 +17,7 @@ import Header from "../components/Header";
 import piexif from "piexifjs";
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const widthX = Dimensions.get("window").width;
 
@@ -33,11 +34,12 @@ async function hasAndroidPermission() {
   }
 
 export default function MetadataScreen({ navigation }) {
+    const [loading, setLoading] = useState(false)
+    const [showSpinner, setShowSpinner] = useState(false);
     const [exifData, setExifData] = useState("");
     const [showData, setShowData] = useState(false);
     const [resultData, setResultData] = useState(null);
     const [base64Image, setBase64Image] = useState(null);
-    const [buttonDisabled, setButtonDisabled] = useState(false);
 
     function parseExif(exifData) {
         const result = [];
@@ -51,49 +53,61 @@ export default function MetadataScreen({ navigation }) {
     }
 
     const cleanImage = async () => {
-        const result = resultData;
-        const base64Data = result.replace("data:image/jpeg;base64,","");
-        
+        setShowSpinner(true);
         try {
+            const result = resultData;
+            const base64Data = result.replace("data:image/jpeg;base64,","");
+            
             const uri = FileSystem.documentDirectory + `${Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)}.jpeg`;
             await FileSystem.writeAsStringAsync(
                 uri,
                 base64Data,
                 {
-                  'encoding': FileSystem.EncodingType.Base64
+                    'encoding': FileSystem.EncodingType.Base64
                 }
             )
             const mediaResult = await MediaLibrary.saveToLibraryAsync(uri);
-        } catch (err) {
-            console.log(`Error: ${err}`)
+            setShowSpinner(false);
+        } catch (e) {
+            console.log(`Error: ${e}`)
+            setShowSpinner(false);
         }
+        
     }
 
     const loadImage = async () => {
-        setButtonDisabled(true);
-
-        if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-            return;
-        }
-
-        let pickerResult = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          base64: true,
-          exif: true,
-          quality: 1,
-        });
+        setLoading(true);
+        try {
+            if (Platform.OS === "android" && !(await hasAndroidPermission())) {
+                return;
+            }
     
-        setBase64Image(pickerResult.base64);
-        setExifData(parseExif(pickerResult.exif));
-        setShowData(true);
-
-        let result = piexif.remove(`data:image/jpg;base64,${pickerResult.base64}`);
-
-        setResultData(result);
+            let pickerResult = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
+              base64: true,
+              exif: true,
+              quality: 1,
+            });
+        
+            setBase64Image(pickerResult.base64);
+            setExifData(parseExif(pickerResult.exif));
+            setShowData(true);
+    
+            let result = piexif.remove(`data:image/jpg;base64,${pickerResult.base64}`);
+    
+            setResultData(result);
+            setLoading(false);
+        } catch (e) {
+            console.log(`Error: ${e}`);
+            setLoading(false);
+        }
       };
 
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: "#121212"}} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={true}>
+        <ScrollView style={{ flex: 1, backgroundColor: "#121212"}} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+            <Spinner
+                visible={showSpinner}
+            />
             <View style={styles.container}>
                 <Header
                     fontSize={widthX * 0.05}
@@ -104,13 +118,15 @@ export default function MetadataScreen({ navigation }) {
                     padding={25}
                     align="center"
                 />
-                <TouchableOpacity disabled={buttonDisabled} style={styles.button} onPress={loadImage}>
+                <TouchableOpacity style={styles.button} onPress={loadImage}>
                     <Text
                         style={{
                             fontSize: 20,
                         }}
                     >
-                        Upload Image
+                        Load Image <ActivityIndicator style={{
+                            display: loading ? "flex" : "none"
+                        }}/>
                     </Text>
                 </TouchableOpacity>
                 <View style={{
@@ -140,7 +156,7 @@ export default function MetadataScreen({ navigation }) {
                         padding: 30,
                         color: "#fff"
                     }}>{exifData}</Text>
-                    <TouchableOpacity disabled={buttonDisabled} style={{
+                    <TouchableOpacity style={{
                         alignItems: "center",
                         backgroundColor: "#50D766",
                         paddingLeft: 80,
